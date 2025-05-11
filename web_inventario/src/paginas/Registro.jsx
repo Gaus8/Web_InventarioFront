@@ -33,7 +33,15 @@ function Registro() {
       });
 
       const result = await res.json();
-      console.log('Respuesta del servidor:', result);
+      if (result.ok) {
+        alert("Usuario Registrado con exito")
+      } else {
+        if (Array.isArray(result.error)) {
+          result.error.forEach(element => {
+            console.log(element.message);
+          });
+        }
+      }
       // Puedes redirigir o mostrar un mensaje aquí
     } catch (err) {
       console.error('Error al enviar formulario:', err);
