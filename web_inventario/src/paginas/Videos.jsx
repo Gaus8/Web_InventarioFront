@@ -9,7 +9,8 @@ function Videos (){
     cards.forEach(card => {
       const video = card.querySelector('video');
       const img = card.querySelector('img');
-
+      img.style.opacity = 1;
+      video.style.opacity = 0;
       card.addEventListener('mouseenter', () =>{
         img.style.opacity = 0;
         video.style.opacity = 1;

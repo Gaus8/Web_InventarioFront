@@ -1,7 +1,6 @@
 import '../assets/styles/styles_forms.css';
 import { useState } from 'react';
-
-
+import axios from 'axios'
 function Registro() {
 
   const [data, setData] = useState({
@@ -9,6 +8,9 @@ function Registro() {
     email: "",
     password: ""
   });
+  const [respuestaServer, setRespuestaServer] = useState("");
+  const [respuesta2Server, setRespuesta2Server] = useState("");
+  const [respuesta3Server, setRespuesta3Server] = useState("");
 
   const handleChange = (e) => {
     setData({
@@ -18,36 +20,47 @@ function Registro() {
   };
 
   const handleSubmit = async (e) => {
+    setRespuestaServer("");
+    setRespuesta2Server("");
+    setRespuesta3Server("");
     e.preventDefault();
     if (!data.name || !data.email || !data.password) {
       alert('Todos los campos son obligatorios');
       return;
     }
-    try {
-      const res = await fetch('http://localhost:5000/registro', { // cambia URL según tu backend
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
 
-      const result = await res.json();
-      if (result.ok) {
-        alert("Usuario Registrado con exito")
-      } else {
-        if (Array.isArray(result.error)) {
-          result.error.forEach(element => {
-            console.log(element.message);
-          });
-        }
+    try {
+      const response = await axios.post('http://localhost:5000/registro', data);
+
+      if (response.status === 201) {
+        window.location.href = "/login";
       }
-      // Puedes redirigir o mostrar un mensaje aquí
     } catch (err) {
-      console.error('Error al enviar formulario:', err);
+      const errorData = err.response?.data;
+
+      if (errorData?.status === 'error') {
+        if (Array.isArray(errorData.error)) {
+          errorData.error.forEach(err => {
+            if (err.message === "error1") {
+              setRespuestaServer("El nombre solo puede tener caracteres alfabéticos")
+            }
+            else if (err.message === "error2") {
+              setRespuesta2Server("El email debe ser válido")
+            }
+            else if (err.message === "error3") {
+              setRespuesta3Server(
+                "La contraseña debe tener al menos 8 caracteres e incluir: una letra mayúscula, una letra minúscula, un número y al menos uno de los siguientes caracteres especiales:.!@#$%^&*"
+              );
+            }
+          });
+        } else {
+          setRespuesta3Server(errorData.message || 'Error desconocido');
+        }
+      } else {
+        console.error('Error al enviar formulario:', err.message);
+      }
     }
   };
-
 
 
   return (
@@ -67,7 +80,7 @@ function Registro() {
               onChange={handleChange}
             />
           </div>
-          <p id="error-name"></p>
+          <p id="error-name">{respuestaServer}</p>
           <div className="form-container-input">
             <ion-icon name="mail-outline"></ion-icon>
             <input
@@ -79,7 +92,7 @@ function Registro() {
               onChange={handleChange}
             />
           </div>
-          <p id="error-email"></p>
+          <p id="error-email">{respuesta2Server}</p>
           <div className="form-container-input">
             <ion-icon name="lock-closed-outline"></ion-icon>
             <input
@@ -91,7 +104,7 @@ function Registro() {
               onChange={handleChange}
             />
           </div>
-          <p id="error-password"></p>
+          <p id="error-password">{respuesta3Server}</p>
           <a href="/login">Iniciar Sesión</a>
           <button className="button" type="submit" id="send-form" >Enviar</button>
         </form>
