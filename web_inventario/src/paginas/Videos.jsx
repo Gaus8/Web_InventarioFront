@@ -59,7 +59,7 @@ function Videos (){
               <video src="/videos/CDISFRUTA1.mp4"muted loop></video>
             </div>
             <div className="card-text-box">
-              <h3>CARTA 1</h3>
+              <h3>Descubre el sabor de Ubaté</h3>
             </div>
           </article>
           <article className="card">
@@ -68,7 +68,7 @@ function Videos (){
               <video src="/videos/CDISFRUTA2.mp4" muted loop></video>
             </div>
             <div className="card-text-box">
-              <h3>CARTA 1</h3>
+              <h3>¡Exportando frescura!</h3>
             </div>
           </article>
           <article className="card">
@@ -77,7 +77,7 @@ function Videos (){
               <video src="/videos/CDISFRUTA3.mp4" muted loop></video>
             </div>
             <div className="card-text-box">
-              <h3>CARTA 1</h3>
+              <h3>Ideal para cualquier momento del día</h3>
             </div>
           </article>
         </section>
