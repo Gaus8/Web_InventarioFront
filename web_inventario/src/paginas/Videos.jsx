@@ -77,7 +77,7 @@ function Videos (){
               <video src="/videos/CDISFRUTA3.mp4" muted loop></video>
             </div>
             <div className="card-text-box">
-              <h3>Ideal para cualquier momento del día</h3>
+              <h3>Ideal para cualquier momento</h3>
             </div>
           </article>
         </section>
