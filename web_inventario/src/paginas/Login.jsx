@@ -30,7 +30,7 @@ const handleSubmit = async (e) => {
     
     // 👇 CORRECTA COMPARACIÓN
     if (res.status === 200) {
-      alert("Usuario Loggeado");
+      alert("El usuario ha iniciado sesión correctamente");
       window.location.href = "/login";
     } 
   } catch (err) {
