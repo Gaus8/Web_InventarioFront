@@ -96,7 +96,7 @@ function MainPage() {
                 Cada bolsita es un susurro de frescura, una mezcla <br />
                 de hierbas y frutas seleccionadas para <br />
                 brindarte un momento de calma y bienestar.<br />
-                ¡Un aromatica con a"lma colombiana!
+                ¡Una aromatica con alma colombiana!
               </p>
             </div>
           </div>
