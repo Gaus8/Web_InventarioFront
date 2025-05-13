@@ -33,7 +33,8 @@ function Registro() {
       const response = await axios.post('http://localhost:5000/registro', data);
 
       if (response.status === 201) {
-        window.location.href = "/login";
+        localStorage.setItem('userEmail', data.email);
+        window.location.href = "/validacion";
       }
     } catch (err) {
       const errorData = err.response?.data;
