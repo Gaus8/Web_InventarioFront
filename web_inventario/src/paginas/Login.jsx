@@ -32,18 +32,13 @@ const handleSubmit = async (e) => {
     if (res.status === 200) {
       alert("Usuario Loggeado");
       window.location.href = "/login";
-    } else {
-      if (Array.isArray(res.data.error)) {
-        res.data.error.forEach(err => {
-          console.log(err.message);
-        });
-      } else {
-        setRespuestaServer(res.data.error);
-        console.log(res.data.error)
-      }
-    }
+    } 
   } catch (err) {
-    console.error('Error al enviar formulario:', err.response?.data || err.message);
+    const errorData = err.response?.data;
+     if (errorData?.status === 'error') {
+      setRespuestaServer(errorData.message);
+    }
+   
   }
 };
 
