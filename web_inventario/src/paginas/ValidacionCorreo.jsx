@@ -1,7 +1,7 @@
 import '../assets/styles/styles_validacion.css';
 
 function ValidacionCorreo() {
-  const correo = localStorage.getItem('correo') || 'tu correo';
+  const correo = localStorage.getItem('userEmail') || 'tu correo';
 
   return (
     <div className="body-validacion">
