@@ -1,56 +1,53 @@
-import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import '../assets/styles/styles_validacion.css';
 
 function Validacion() {
-  const [email, setEmail] = useState('');
   const [mensaje, setMensaje] = useState('');
   const [error, setError] = useState('');
+  const { token } = useParams(); // capturar token de la URL
+  const navigate = useNavigate();
 
-  // Recuperar email almacenado al cargar el componente
   useEffect(() => {
-    const storedEmail = localStorage.getItem('userEmail');
-    if (storedEmail) {
-      setEmail(storedEmail);
-      setMensaje(`¡Ya casi terminamos!\nHemos enviado un correo a ${storedEmail}.\nPor favor, sigue las instrucciones que encontrarás allí.`);
-    } else {
-      setError('No se encontró un correo electrónico registrado.');
+    const verificarCuenta = async () => {
+      try {
+        const res = await axios.get(`https://web-inventario.onrender.com/validacion/${token}`);
+        if (res.status === 200) {
+          // Mensaje opcional antes de redirigir
+          setMensaje(res.data?.mensaje || 'Cuenta verificada correctamente.');
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000); // esperar 2 segundos antes de redirigir
+        } else {
+          setError('Error al verificar la cuenta.');
+        }
+      } catch (err) {
+        if (err.response?.data) {
+          setError(err.response.data.mensaje || 'Token inválido o expirado.');
+        } else {
+          setError('Error del servidor al verificar la cuenta.');
+        }
+      }
+    };
+
+    if (token) {
+      verificarCuenta();
     }
-  }, []);
-
-  const handleResend = async () => {
-    setMensaje('');
-    setError('');
-
-    if (!email) {
-      setError('No se encontró un correo electrónico registrado.');
-      return;
-    }
-
-  };
+  }, [token, navigate]);
 
   return (
     <div className="body-validacion">
       <form className="form-container-validacion" onSubmit={(e) => e.preventDefault()}>
-        <img 
+        <img
           className="logo-empresa-validacion"
           src="/img/logo_amg.jpg"
-          alt="logo_aplicacion" 
+          alt="logo_aplicacion"
         />
         <h3>Verificación de Cuenta</h3>
 
-        {mensaje && (
-          <p className="mensaje-ok">
-            <strong>¡Ya casi terminamos!</strong><br />
-            Hemos enviado un correo a <strong>{email}</strong>.<br />
-            Por favor, sigue las instrucciones que encontrarás allí.
-          </p>
-        )}
-
+        {mensaje && <p className="mensaje-ok">{mensaje}</p>}
         {error && <p className="mensaje-error">{error}</p>}
-
-        <button className="button-validacion" onClick={handleResend}>
-          Reenviar correo de verificación
-        </button>
       </form>
     </div>
   );
