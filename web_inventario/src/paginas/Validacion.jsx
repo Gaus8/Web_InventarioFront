@@ -47,6 +47,7 @@ function Validacion() {
         <h3>Verificación de Cuenta</h3>
 
         {mensaje && <p className="mensaje-ok">{mensaje}</p>}
+        <a href="/login">Iniciar Sesion</a>
         {error && <p className="mensaje-error">{error}</p>}
       </form>
     </div>
