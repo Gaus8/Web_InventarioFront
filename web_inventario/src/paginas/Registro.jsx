@@ -106,6 +106,7 @@ function Registro() {
             />
           </div>
           <p id="error-password">{respuesta3Server}</p>
+          li
           <a href="/login">Iniciar Sesión</a>
           <button className="button" type="submit" id="send-form" >Enviar</button>
         </form>
