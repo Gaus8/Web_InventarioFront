@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import '../assets/styles/styles_validacion.css';
 
 function Validacion() {
@@ -27,14 +26,6 @@ function Validacion() {
       return;
     }
 
-    try {
-      const response = await axios.post('https://web-inventario.onrender.com/validacion:token', { email });
-      if (response.status === 200) {
-        setMensaje(`¡Ya casi terminamos!\nHemos reenviado el correo a ${email}.\nRevisa tu bandeja de entrada y sigue las instrucciones.`);
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Error al reenviar el correo.');
-    }
   };
 
   return (
