@@ -8,7 +8,7 @@ function App() {
     {path:'/', element:<MainPage />},
     {path:'/login', element:<Login />},
     {path:'/registro', element:<Registro />},
-    {path:'/validacion', element:<Validacion />}
+    {path:'/validacion/:token', element:<Validacion />}
   ])
   return (
     <RouterProvider router={router} />
