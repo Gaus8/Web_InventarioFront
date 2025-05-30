@@ -8,7 +8,8 @@ function App() {
     {path:'/', element:<MainPage />},
     {path:'/login', element:<Login />},
     {path:'/registro', element:<Registro />},
-    {path:'/validacion/:token', element:<Validacion />}
+    {path:'/validacion/:token', element:<Validacion />},
+    {path:'/validacion', element:<Validacion />}
   ])
   return (
     <RouterProvider router={router} />
