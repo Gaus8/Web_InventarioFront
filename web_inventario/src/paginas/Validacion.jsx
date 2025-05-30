@@ -28,7 +28,7 @@ function Validacion() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/validacion:token', { email });
+      const response = await axios.post('https://web-inventario.onrender.com/validacion:token', { email });
       if (response.status === 200) {
         setMensaje(`¡Ya casi terminamos!\nHemos reenviado el correo a ${email}.\nRevisa tu bandeja de entrada y sigue las instrucciones.`);
       }

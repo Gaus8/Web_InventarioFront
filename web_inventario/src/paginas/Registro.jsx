@@ -30,7 +30,7 @@ function Registro() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/registro', data);
+      const response = await axios.post('https://web-inventario.onrender.com/registro', data);
 
       if (response.status === 201) {
         localStorage.setItem('userEmail', data.email);
