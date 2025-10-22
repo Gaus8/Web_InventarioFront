@@ -31,11 +31,15 @@ function MainPage() {
         </header>
         <section className="section-info">
           <div className="section-info-text">
-            <h1>Aplicativo Moderno <br />de Gestión del Inventario <br /> (AMG)</h1>
+            <h1>
+              SISTEMA INTEGRAL DE E-COMMERCE <br />
+              PARA LA EMPRESA CDISFRUTA <br />
+              EN LA VILLA DE SAN DIEGO DE UBATE (SIECU)<br />
+            </h1>
             <p>
-              Desarrollar una aplicación web destinada a mejorar la gestión de inventario,<br />
-              para aumentar la productividad en los pequeños sectores comerciales, <br />
-              específicamente en la empresa CDISFRUTA ubicada en la Villa de San Diego de Ubaté.
+              Desarrollar un aplicativo web responsive integrando<br />
+              el sistema e-commerce para la empresa CDISFRUTA, <br />
+              con el fin de ampliar su alcance comercial en la provincia de Ubaté.
             </p>
             <Link to={'/registro'}>
               <button className="btn-login" type="submit" >Empezar</button>
@@ -146,7 +150,7 @@ function MainPage() {
           </div>
 
         </footer>
-    
+
 
       </div>
     </>

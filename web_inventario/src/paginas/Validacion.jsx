@@ -8,11 +8,15 @@ function Validacion() {
   const [error, setError] = useState('');
   const { token } = useParams(); // capturar token de la URL
   const navigate = useNavigate();
+  
+  const urlRender = `https://web-inventario.onrender.com/validacion/${token}`;
+  const urlServer = `http://localhost:5000/api/validacion/${token}`
+
 
   useEffect(() => {
     const verificarCuenta = async () => {
       try {
-        const res = await axios.get(`https://web-inventario.onrender.com/validacion/${token}`);
+        const res = await axios.get(urlServer);
         if (res.status === 200) {
           // Mensaje opcional antes de redirigir
           setMensaje(res.data?.mensaje || 'Cuenta verificada correctamente.');
@@ -24,7 +28,7 @@ function Validacion() {
         }
       } catch (err) {
         if (err.response?.data) {
-          setError(err.response.data.mensaje || 'Token inválido o expirado.');
+          setError(err.response.data.mensaje);
         } else {
           setError('Error del servidor al verificar la cuenta.');
         }

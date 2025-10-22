@@ -4,7 +4,10 @@ import { useState } from 'react';
 
 function Login() {
 
-const [respuestaServer, setRespuestaServer] = useState("");
+  const urlRender = 'https://web-inventario.onrender.com/registro';
+  const urlServer = 'http://localhost:5000/api/login'
+
+  const [respuestaServer, setRespuestaServer] = useState("");
 
   const [data, setData] = useState({
     email: "",
@@ -17,30 +20,30 @@ const [respuestaServer, setRespuestaServer] = useState("");
       [e.target.name]: e.target.value
     });
   };
-  
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!data.email || !data.password) {
-    alert('Todos los campos son obligatorios');
-    return;
-  }
 
-  try {
-    const res = await axios.post('https://web-inventario.onrender.com/login', data);
-    
-    // 👇 CORRECTA COMPARACIÓN
-    if (res.status === 200) {
-      alert("El usuario ha iniciado sesión correctamente");
-      window.location.href = "/login";
-    } 
-  } catch (err) {
-    const errorData = err.response?.data;
-     if (errorData?.status === 'error') {
-      setRespuestaServer(errorData.message);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!data.email || !data.password) {
+      alert('Todos los campos son obligatorios');
+      return;
     }
-   
-  }
-};
+
+    try {
+      const res = await axios.post(`${urlServer}`, data);
+
+      // 👇 CORRECTA COMPARACIÓN
+      if (res.status === 200) {
+        alert("El usuario ha iniciado sesión correctamente");
+        window.location.href = "/login";
+      }
+    } catch (err) {
+      const errorData = err.response?.data;
+      if (errorData?.status === 'error') {
+        setRespuestaServer(errorData.message);
+      }
+
+    }
+  };
 
   return (
     <>
@@ -50,9 +53,9 @@ const handleSubmit = async (e) => {
           <h3>Inicio de Sesión</h3>
           <div className="form-container-input">
             <ion-icon name="mail-outline"></ion-icon>
-            <input 
-              id="email-input" 
-              type="email" 
+            <input
+              id="email-input"
+              type="email"
               placeholder="Ingrese su email"
               name="email"
               value={data.email}
@@ -62,8 +65,8 @@ const handleSubmit = async (e) => {
           <p id="error-email"></p>
           <div className="form-container-input">
             <ion-icon name="lock-closed-outline"></ion-icon>
-            <input id="password-input" 
-              type="password" 
+            <input id="password-input"
+              type="password"
               placeholder="Ingrese una contraseña"
               name="password"
               value={data.password}

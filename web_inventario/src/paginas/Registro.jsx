@@ -3,6 +3,9 @@ import { useState } from 'react';
 import axios from 'axios'
 function Registro() {
 
+  const urlRender = 'https://web-inventario.onrender.com/registro';
+  const urlServer = 'http://localhost:5000/api/registro'
+
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -30,7 +33,8 @@ function Registro() {
     }
 
     try {
-      const response = await axios.post('https://web-inventario.onrender.com/registro', data);
+      //Cambiar a urlRender para el deploy
+      const response = await axios.post(urlServer, data);
 
       if (response.status === 201) {
         localStorage.setItem('userEmail', data.email);
@@ -106,7 +110,6 @@ function Registro() {
             />
           </div>
           <p id="error-password">{respuesta3Server}</p>
-          li
           <a href="/login">Iniciar Sesión</a>
           <button className="button" type="submit" id="send-form" >Enviar</button>
         </form>
