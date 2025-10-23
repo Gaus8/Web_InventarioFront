@@ -5,6 +5,7 @@ import MainPage from "./paginas/MainPage"
 import Validacion from "./paginas/Validacion"
 import ValidacionCorreo from "./paginas/ValidacionCorreo"
 import Dashboard from "./paginas/dashboard"
+import UserPage from "./paginas/UserPage"
 function App() {
   const router = createBrowserRouter([
     {path:'/', element:<MainPage />},
@@ -12,7 +13,8 @@ function App() {
     {path:'/registro', element:<Registro />},
     {path:'/validacion/:token', element:<Validacion />},
     {path:'/validacion', element:<ValidacionCorreo />},
-    {path:'/dashboard', element:<Dashboard />},
+    {path:'/dashboard_admin', element:<Dashboard />},
+    {path:'/dashboard_user', element:<UserPage />},
   ])
   return (
     <RouterProvider router={router} />

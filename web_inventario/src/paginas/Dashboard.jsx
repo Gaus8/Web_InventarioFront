@@ -1,4 +1,4 @@
-import '../assets/styles/styles_dashboard.css';
+import '../assets/styles/styles_dashboard_admin.css';
 import {
   FaHome,
   FaBox,
