@@ -92,7 +92,7 @@ function MainPage() {
           </div>
           <div className="section-products-container">
             <div className="image-products">
-              <img src="/img/cdisfruta_04.jpg" alt="" />
+              <img src="/img/cdisfruta_05.jpg" alt="" />
             </div>
             <div className="products-text">
               <h4>BOLSITAS CDISFRUTA</h4>
@@ -143,7 +143,7 @@ function MainPage() {
           </div>
           <div className="footer-social">
             <h3>Acerca de CDISFRUTA</h3>
-            <p>Somos una empresa de Ubaté con dos años en el mercado, dedicada <br />
+            <p>Somos una empresa de Ubaté con cuatro años en el mercado, dedicada <br />
               a la produccion de frutas deshidratas, promoviendo una
               alimentacion saludable.
             </p>
