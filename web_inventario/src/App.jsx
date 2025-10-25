@@ -4,7 +4,7 @@ import Registro from "./paginas/Registro"
 import MainPage from "./paginas/MainPage"
 import Validacion from "./paginas/Validacion"
 import ValidacionCorreo from "./paginas/ValidacionCorreo"
-import Dashboard from "./paginas/dashboard"
+import Dashboard from "./paginas/Dashboard"
 import UserPage from "./paginas/UserPage"
 function App() {
   const router = createBrowserRouter([
@@ -15,6 +15,7 @@ function App() {
     {path:'/validacion', element:<ValidacionCorreo />},
     {path:'/dashboard_admin', element:<Dashboard />},
     {path:'/dashboard_user', element:<UserPage />},
+
   ])
   return (
     <RouterProvider router={router} />

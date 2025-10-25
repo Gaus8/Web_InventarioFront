@@ -1,9 +1,10 @@
 import '../assets/styles/styles_forms.css'
 import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
-
+  const navigate = useNavigate(); 
   const urlRender = 'https://web-inventario.onrender.com/registro';
   const urlServer = 'http://localhost:5000/api/login'
 
@@ -34,7 +35,7 @@ function Login() {
       // 👇 CORRECTA COMPARACIÓN
       if (res.status === 200) {
         alert("El usuario ha iniciado sesión correctamente");
-        window.location.href = "/login";
+        navigate("/dashboard_admin");
       }
     } catch (err) {
       const errorData = err.response?.data;
@@ -49,7 +50,7 @@ function Login() {
     <>
       <div className="body">
         <form className="form-container" onSubmit={handleSubmit}>
-          <img className="logo-empresa" src="/img/logo_amg.jpg" alt="logo_aplicacion" />
+          <img className="logo-empresa" src="/img/logo_siecu.png" alt="logo_aplicacion" />
           <h3>Inicio de Sesión</h3>
           <div className="form-container-input">
             <ion-icon name="mail-outline"></ion-icon>

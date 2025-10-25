@@ -72,7 +72,7 @@ function Registro() {
     <>
       <div className="body">
         <form className="form-container" onSubmit={handleSubmit}>
-          <img className="logo-empresa" src="/img/logo_amg.jpg" alt="logo_aplicacion" />
+          <img className="logo-empresa" src="/img/logo_siecu.png" alt="logo_aplicacion" />
           <h3>Crear Cuenta</h3>
           <div className="form-container-input">
             <ion-icon name="person-outline" alt="logo-facebook"></ion-icon>

@@ -45,7 +45,7 @@ function Validacion() {
       <form className="form-container-validacion" onSubmit={(e) => e.preventDefault()}>
         <img
           className="logo-empresa-validacion"
-          src="/img/logo_amg.jpg"
+          src="/img/logo_siecu.png"
           alt="logo_aplicacion"
         />
         <h3>Verificación de Cuenta</h3>
