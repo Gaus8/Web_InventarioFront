@@ -19,6 +19,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 .logo {
@@ -30,20 +31,35 @@
 .menu {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .menu li {
+  margin-bottom: 5px;
+}
+
+.menu li a {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 10px;
+  width: 100%;
+  padding: 12px 15px;
+  color: #d1d5db;
+  text-decoration: none;
   border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.2s;
+  box-sizing: border-box;
+  white-space: nowrap;
 }
 
-.menu li:hover {
+.menu li a:hover {
   background-color: #1f2937;
+  color: white;
+}
+
+.menu li.active a {
+  background-color: #1e3a8a;
+  color: white;
 }
 
 /* === Header === */
@@ -54,6 +70,7 @@
   background: #f3f4f6;
   padding: 15px 25px;
   border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
 }
 
 .header-icons {
@@ -78,15 +95,16 @@
   background-color: #f9fafb;
   height: 100%;
   overflow-y: auto;
+  flex: 1;
 }
 
+/* === Cards del Dashboard === */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
 }
 
-/* === Card === */
 .card {
   background: #fff;
   padding: 20px;
@@ -109,4 +127,42 @@
   font-size: 1.5rem;
   color: #2563eb;
   font-weight: bold;
+}
+
+/* === Estilos para página de Productos === */
+.products-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.title {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #374151;
+}
+
+/* === Estilos para página de Usuarios === */
+.users-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* === Estilos para página de Ventas === */
+.sales-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* === Estilos para página de Configuración === */
+.settings-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }

@@ -6,6 +6,8 @@ import Validacion from "./paginas/Validacion"
 import ValidacionCorreo from "./paginas/ValidacionCorreo"
 import Dashboard from "./paginas/Dashboard"
 import UserPage from "./paginas/UserPage"
+import Productos from "./paginas/Productos"
+
 function App() {
   const router = createBrowserRouter([
     {path:'/', element:<MainPage />},
@@ -15,6 +17,7 @@ function App() {
     {path:'/validacion', element:<ValidacionCorreo />},
     {path:'/dashboard_admin', element:<Dashboard />},
     {path:'/dashboard_user', element:<UserPage />},
+    {path:'/productos', element:<Productos />},
 
   ])
   return (
