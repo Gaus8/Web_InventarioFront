@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const urlRender = 'https://web-inventario.onrender.com/registro';
   const urlServer = 'http://localhost:5000/api/login'
 
@@ -32,11 +32,17 @@ function Login() {
     try {
       const res = await axios.post(`${urlServer}`, data);
 
-      // 👇 CORRECTA COMPARACIÓN
-      if (res.status === 200) {
-        alert("El usuario ha iniciado sesión correctamente");
+
+      if (res.status === 200 && res.data?.rol === 'admin') {
         navigate("/dashboard_admin");
+      } 
+      else if (res.status === 200 && res.data?.rol === 'user') {
+        navigate("/dashboard_user");
       }
+      else{
+        window.alert('Fallo en el inicio de Sesión')
+      }
+
     } catch (err) {
       const errorData = err.response?.data;
       if (errorData?.status === 'error') {
