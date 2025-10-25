@@ -17,7 +17,7 @@ function MainPage() {
       <div className="body">
         <header>
           <div className="logo-img">
-            <img src="/img/logo_amg.jpg" alt="" />
+            <img src="/img/logo_siecu.png" alt="" />
           </div>
           <input type="checkbox" id="check" />
           <label htmlFor="check" className="show-menu">&#8801;</label>

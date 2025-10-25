@@ -86,7 +86,7 @@ img{
   font-size: clamp(0.5rem, 3rem, 1.2rem);
   color: #000;
   text-align: left;
-  margin: 15px 0;
+  margin: 30px 0;
 }
 
 .section-info-img{
@@ -147,7 +147,7 @@ img{
 }
 
 .products-text {
-  margin-top: 20px;
+  margin-top: 25px;
   display: flex;
   flex-direction: column;
   justify-content: center;
