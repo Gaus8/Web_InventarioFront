@@ -395,7 +395,7 @@ function MainContent() {
                   >
                     <FaCloudUploadAlt className="upload-icon" />
                     <div className="upload-text">
-                      {formData.imagen ? '✅ Imagen lista para subir' : 'Haz click o arrastra una imagen aquí'}
+                      {formData.imagen ? 'Imagen lista para subir' : 'Haz click o arrastra una imagen aquí'}
                     </div>
                     <div className="upload-hint">
                       PNG, JPG, WEBP (Máx. 5MB)
