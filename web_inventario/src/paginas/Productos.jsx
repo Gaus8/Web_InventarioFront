@@ -91,33 +91,31 @@ function MainContent() {
   const [uploadStatus, setUploadStatus] = useState('');
   const fileInputRef = useRef(null);
 
-  // Por ahora, usaremos datos locales hasta que crees las otras rutas
+
   useEffect(() => {
-    // Simular carga de datos
-    setTimeout(() => {
-      setProducts([
-        {
-          _id: 1,
-          nombre: "Laptop Gaming",
-          precio: 1200,
-          stock: 15,
-          descripcion: "Laptop para gaming de alta gama",
-          categoria: "Tecnología",
-          imagen: "https://res.cloudinary.com/demo/image/upload/v1626299476/sample.jpg"
-        },
-        {
-          _id: 2,
-          nombre: "Smartphone Pro",
-          precio: 800,
-          stock: 25,
-          descripcion: "Teléfono inteligente con cámara profesional",
-          categoria: "Tecnología",
-          imagen: "https://res.cloudinary.com/demo/image/upload/v1626299477/sample2.jpg"
-        }
-      ]);
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/productos`);
+      
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      console.log('📦 Productos cargados:', data); // ← AÑADE ESTO
+      setProducts(data);
+      
+    } catch (error) {
+      console.error('Error cargando productos:', error);
+      alert(`Error al cargar productos: ${error.message}`);
+    } finally {
       setLoading(false);
-    }, 1000);
-  }, []);
+    }
+  };
+  
+  fetchProducts();
+}, []);
 
   const handleAddProduct = () => {
     setEditingProduct(null);
