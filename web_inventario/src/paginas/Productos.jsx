@@ -69,7 +69,7 @@ function MainContent() {
     <div className="dashboard-content">
       <div className="products-container"> {/* Agrega esta clase */}
         <h2 className="title">Sección de Productos</h2>
-        <p>Aquí podrás gestionar tus productos.</p>
+        <p>Aquí.</p>
       </div>
     </div>
   );
