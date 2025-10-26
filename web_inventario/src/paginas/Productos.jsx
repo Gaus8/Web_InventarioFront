@@ -10,7 +10,11 @@ import {
   FaEdit,
   FaTrash,
   FaPlus,
-  FaCloudUploadAlt
+  FaCloudUploadAlt,
+  FaSignOutAlt,
+  FaUser,
+  FaCogs,
+  FaShieldAlt
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
@@ -18,7 +22,7 @@ import { useState, useRef, useEffect } from "react";
 // Configuración 
 const CLOUD_NAME = 'dvm6e1hbr'; 
 const UPLOAD_PRESET = 'CDISFRUTA'; 
-const API_URL = 'http://localhost:5000/api'; // ⚠️ Cambié a puerto 5000
+const API_URL = 'http://localhost:5000/api';
 
 export default function Productos() {
   return (
@@ -62,13 +66,152 @@ function Sidebar() {
 
 /* ========== HEADER ========== */
 function Header() {
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [notifications] = useState(3);
+
+  const handleLogoutClick = () => {
+    setShowProfileDropdown(false);
+    setShowLogoutModal(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    // Aquí va tu lógica de logout
+    console.log('Cerrando sesión...');
+    
+    // Limpiar datos de sesión (si los tienes)
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('user');
+    
+    // Redirigir a la página principal
+    window.location.href = '/'; // Esto recargará la página y llevará al MainPage
+    
+    setShowLogoutModal(false);
+  };
+
+  const handleLogoutCancel = () => {
+    setShowLogoutModal(false);
+  };
+
+  const handleProfileClick = () => {
+    console.log('Ir a perfil...');
+    setShowProfileDropdown(false);
+  };
+
+  const handleSettingsClick = () => {
+    console.log('Ir a configuraciones...');
+    setShowProfileDropdown(false);
+  };
+
   return (
     <div className="header">
       <h1 className="header-title">Gestión de Productos</h1>
       <div className="header-icons">
-        <FaBell className="icon" />
-        <FaUserCircle className="icon" />
+        {/* Notificaciones */}
+        <div className="header-notifications">
+          <FaBell className="icon" />
+          {notifications > 0 && (
+            <span className="notification-badge">{notifications}</span>
+          )}
+        </div>
+
+        {/* Perfil con Dropdown */}
+        <div className="header-profile">
+          <FaUserCircle 
+            className="icon" 
+            onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+            style={{ cursor: 'pointer' }}
+          />
+          
+          {showProfileDropdown && (
+            <div className="profile-dropdown">
+              {/* Información del usuario */}
+              <div style={{ 
+                padding: '12px 16px', 
+                borderBottom: '1px solid #e5e7eb',
+                background: '#f9fafb'
+              }}>
+                <div style={{ fontWeight: '500', color: '#374151' }}>
+                  Admin User
+                </div>
+                <div style={{ 
+                  fontSize: '12px', 
+                  color: '#6b7280',
+                  marginTop: '2px'
+                }}>
+                  admin@cdisfruta.com
+                </div>
+              </div>
+
+              {/* Opciones del dropdown */}
+              <button className="dropdown-item" onClick={handleProfileClick}>
+                <FaUser size={14} />
+                Mi Perfil
+              </button>
+
+              <button className="dropdown-item" onClick={handleSettingsClick}>
+                <FaCogs size={14} />
+                Configuración
+              </button>
+
+              <button className="dropdown-item">
+                <FaShieldAlt size={14} />
+                Privacidad
+              </button>
+
+              <div className="dropdown-divider"></div>
+
+              <button className="dropdown-item logout" onClick={handleLogoutClick}>
+                <FaSignOutAlt size={14} />
+                Cerrar Sesión
+              </button>
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Overlay para cerrar el dropdown al hacer click fuera */}
+      {showProfileDropdown && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 999
+          }}
+          onClick={() => setShowProfileDropdown(false)}
+        />
+      )}
+
+      {/* Modal de Logout */}
+      {showLogoutModal && (
+        <div className="logout-modal-overlay">
+          <div className="logout-modal">
+            <FaSignOutAlt className="logout-icon" />
+            <h2 className="logout-title">Cerrar Sesión</h2>
+            <p className="logout-message">
+              ¿Estás seguro de que quieres cerrar sesión?<br />
+              Serás redirigido a la página principal.
+            </p>
+            <div className="logout-actions">
+              <button 
+                className="btn-logout-cancel"
+                onClick={handleLogoutCancel}
+              >
+                Cancelar
+              </button>
+              <button 
+                className="btn-logout-confirm"
+                onClick={handleLogoutConfirm}
+              >
+                Sí, Cerrar Sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -91,31 +234,30 @@ function MainContent() {
   const [uploadStatus, setUploadStatus] = useState('');
   const fileInputRef = useRef(null);
 
-
   useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`${API_URL}/productos`);
-      
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${API_URL}/productos`);
+        
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log('📦 Productos cargados:', data);
+        setProducts(data);
+        
+      } catch (error) {
+        console.error('Error cargando productos:', error);
+        alert(`Error al cargar productos: ${error.message}`);
+      } finally {
+        setLoading(false);
       }
-      
-      const data = await response.json();
-      console.log('📦 Productos cargados:', data); // ← AÑADE ESTO
-      setProducts(data);
-      
-    } catch (error) {
-      console.error('Error cargando productos:', error);
-      alert(`Error al cargar productos: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-  fetchProducts();
-}, []);
+    };
+    
+    fetchProducts();
+  }, []);
 
   const handleAddProduct = () => {
     setEditingProduct(null);
@@ -146,24 +288,25 @@ function MainContent() {
   };
 
   const handleDeleteProduct = async (productId) => {
-  if (window.confirm('¿Estás seguro de que quieres eliminar este producto?')) {
-    try {
-      const response = await fetch(`${API_URL}/productos/${productId}`, {
-        method: 'DELETE',
-      });
-      
-      if (!response.ok) {
-        throw new Error('Error al eliminar producto');
+    if (window.confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+      try {
+        const response = await fetch(`${API_URL}/productos/${productId}`, {
+          method: 'DELETE',
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error al eliminar producto');
+        }
+        
+        const result = await response.json();
+        setProducts(products.filter(product => product._id !== productId));
+        alert(result.message);
+      } catch (error) {
+        alert('Error al eliminar el producto: ' + error.message);
       }
-      
-      const result = await response.json();
-      setProducts(products.filter(product => product._id !== productId));
-      alert(result.message);
-    } catch (error) {
-      alert('Error al eliminar el producto: ' + error.message);
     }
-  }
-};
+  };
+
   // Función para subir imagen a Cloudinary
   const uploadImage = async (file) => {
     setUploading(true);
@@ -237,58 +380,58 @@ function MainContent() {
   };
 
   const handleSaveProduct = async () => {
-  try {
-    const productData = {
-      nombre: formData.nombre,
-      precio: Number(formData.precio),
-      stock: Number(formData.stock),
-      descripcion: formData.descripcion,
-      categoria: formData.categoria || 'General',
-      imagen: formData.imagen
-    };
+    try {
+      const productData = {
+        nombre: formData.nombre,
+        precio: Number(formData.precio),
+        stock: Number(formData.stock),
+        descripcion: formData.descripcion,
+        categoria: formData.categoria || 'General',
+        imagen: formData.imagen
+      };
 
-    if (editingProduct) {
-      // Editar producto existente
-      const response = await fetch(`${API_URL}/productos/${editingProduct._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(productData),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Error al actualizar producto');
+      if (editingProduct) {
+        // Editar producto existente
+        const response = await fetch(`${API_URL}/productos/${editingProduct._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(productData),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error al actualizar producto');
+        }
+        
+        const result = await response.json();
+        setProducts(products.map(product => 
+          product._id === editingProduct._id ? result.product : product
+        ));
+        alert(result.message);
+      } else {
+        // Agregar nuevo producto
+        const response = await fetch(`${API_URL}/registro-productos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(productData),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error al crear producto');
+        }
+        
+        const result = await response.json();
+        setProducts([...products, result.product]);
+        alert(result.message);
       }
-      
-      const result = await response.json();
-      setProducts(products.map(product => 
-        product._id === editingProduct._id ? result.product : product
-      ));
-      alert(result.message);
-    } else {
-      // Agregar nuevo producto
-      const response = await fetch(`${API_URL}/registro-productos`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(productData),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Error al crear producto');
-      }
-      
-      const result = await response.json();
-      setProducts([...products, result.product]);
-      alert(result.message);
+      setShowModal(false);
+    } catch (error) {
+      alert('Error al guardar el producto: ' + error.message);
     }
-    setShowModal(false);
-  } catch (error) {
-    alert('Error al guardar el producto: ' + error.message);
-  }
-};
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
