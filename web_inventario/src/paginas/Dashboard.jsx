@@ -59,7 +59,7 @@ function Sidebar() {
 function Header() {
   return (
     <div className="header">
-      <h1>Panel de Control</h1>
+      <h1 className="header-title">Panel de Control</h1>
       <div className="header-icons">
         <FaBell className="icon" />
         <FaUserCircle className="icon" />
