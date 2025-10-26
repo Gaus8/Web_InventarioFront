@@ -10,10 +10,15 @@ import {
   FaEdit,
   FaTrash,
   FaPlus,
-  FaImage
+  FaImage,
+  FaCloudUploadAlt
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
+
+// Configuración de Cloudinary 
+const CLOUD_NAME = 'dvm6e1hbr'; 
+const UPLOAD_PRESET = 'CDISFRUTA'; 
 
 export default function Productos() {
   return (
@@ -59,7 +64,7 @@ function Sidebar() {
 function Header() {
   return (
     <div className="header">
-      <h1 className="header-title">Panel de Control</h1>
+      <h1 className="header-title">Gestión de Productos</h1>
       <div className="header-icons">
         <FaBell className="icon" />
         <FaUserCircle className="icon" />
@@ -76,28 +81,32 @@ function MainContent() {
       name: "Laptop Gaming",
       price: 1200,
       stock: 15,
-      description: "Laptop para gaming de alta gama"
+      description: "Laptop para gaming de alta gama",
+      image: "https://res.cloudinary.com/demo/image/upload/v1626299476/sample.jpg"
     },
     {
       id: 2,
       name: "Smartphone Pro",
       price: 800,
       stock: 25,
-      description: "Teléfono inteligente con cámara profesional"
+      description: "Teléfono inteligente con cámara profesional",
+      image: "https://res.cloudinary.com/demo/image/upload/v1626299477/sample2.jpg"
     },
     {
       id: 3,
       name: "Tablet Android",
       price: 350,
       stock: 8,
-      description: "Tablet perfecta para trabajo y entretenimiento"
+      description: "Tablet perfecta para trabajo y entretenimiento",
+      image: ""
     },
     {
       id: 4,
       name: "Auriculares Bluetooth",
       price: 150,
       stock: 30,
-      description: "Auriculares inalámbricos con cancelación de ruido"
+      description: "Auriculares inalámbricos con cancelación de ruido",
+      image: ""
     }
   ]);
 
@@ -107,12 +116,15 @@ function MainContent() {
     name: '',
     price: '',
     stock: '',
-    description: ''
+    description: '',
+    image: ''
   });
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleAddProduct = () => {
     setEditingProduct(null);
-    setFormData({ name: '', price: '', stock: '', description: '' });
+    setFormData({ name: '', price: '', stock: '', description: '', image: '' });
     setShowModal(true);
   };
 
@@ -122,7 +134,8 @@ function MainContent() {
       name: product.name,
       price: product.price,
       stock: product.stock,
-      description: product.description
+      description: product.description,
+      image: product.image || ''
     });
     setShowModal(true);
   };
@@ -133,12 +146,84 @@ function MainContent() {
     }
   };
 
+  // Función para subir imagen a Cloudinary
+  const uploadImage = async (file) => {
+    setUploading(true);
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', UPLOAD_PRESET);
+    
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+      
+      const data = await response.json();
+      setFormData(prev => ({ ...prev, image: data.secure_url }));
+      return data.secure_url;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Error al subir la imagen');
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFileSelect = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        alert('La imagen es demasiado grande. Máximo 5MB.');
+        return;
+      }
+      
+      if (!file.type.startsWith('image/')) {
+        alert('Por favor selecciona un archivo de imagen válido.');
+        return;
+      }
+      
+      await uploadImage(file);
+    }
+  };
+
+  const handleDrop = async (event) => {
+    event.preventDefault();
+    event.currentTarget.classList.remove('dragover');
+    
+    const files = event.dataTransfer.files;
+    if (files.length > 0) {
+      await handleFileSelect({ target: { files } });
+    }
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    event.currentTarget.classList.add('dragover');
+  };
+
+  const handleDragLeave = (event) => {
+    event.preventDefault();
+    event.currentTarget.classList.remove('dragover');
+  };
+
   const handleSaveProduct = () => {
     if (editingProduct) {
       // Editar producto existente
       setProducts(products.map(product => 
         product.id === editingProduct.id 
-          ? { ...editingProduct, ...formData, price: Number(formData.price), stock: Number(formData.stock) }
+          ? { 
+              ...editingProduct, 
+              ...formData, 
+              price: Number(formData.price), 
+              stock: Number(formData.stock),
+              image: formData.image
+            }
           : product
       ));
     } else {
@@ -148,7 +233,8 @@ function MainContent() {
         name: formData.name,
         price: Number(formData.price),
         stock: Number(formData.stock),
-        description: formData.description
+        description: formData.description,
+        image: formData.image
       };
       setProducts([...products, newProduct]);
     }
@@ -178,7 +264,16 @@ function MainContent() {
           {products.map(product => (
             <div key={product.id} className="product-card">
               <div className="product-image">
-                <FaImage size={32} />
+                {product.image ? (
+                  <img 
+                    src={product.image} 
+                    alt={product.name}
+                    className="preview-image"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <FaImage size={32} />
+                )}
               </div>
               <div className="product-info">
                 <h3>{product.name}</h3>
@@ -211,65 +306,101 @@ function MainContent() {
         </div>
 
         {showModal && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <h2>{editingProduct ? 'Editar Producto' : 'Agregar Producto'}</h2>
-              <div className="form-group">
-                <label>Nombre del Producto</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder="Ingresa el nombre del producto"
-                />
-              </div>
-              <div className="form-group">
-                <label>Precio ($)</label>
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  placeholder="Ingresa el precio"
-                />
-              </div>
-              <div className="form-group">
-                <label>Stock</label>
-                <input
-                  type="number"
-                  name="stock"
-                  value={formData.stock}
-                  onChange={handleInputChange}
-                  placeholder="Ingresa la cantidad en stock"
-                />
-              </div>
-              <div className="form-group">
-                <label>Descripción</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  placeholder="Ingresa una descripción del producto"
-                />
-              </div>
-              <div className="form-actions">
-                <button 
-                  className="btn btn-cancel"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancelar
-                </button>
-                <button 
-                  className="btn btn-save"
-                  onClick={handleSaveProduct}
-                >
-                  {editingProduct ? 'Actualizar' : 'Guardar'}
-                </button>
-              </div>
+  <div className="modal-overlay">
+    <div className="modal">
+      <h2>{editingProduct ? 'Editar Producto' : 'Agregar Producto'}</h2>
+      
+      <div className="modal-content"> 
+        {/* Upload de imagen */}
+        <div className="form-group">
+          <label>Imagen del Producto</label>
+          <div 
+            className="image-upload"
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <FaCloudUploadAlt className="upload-icon" />
+            <div className="upload-text">
+              {formData.image ? 'Imagen seleccionada' : 'Haz click o arrastra una imagen aquí'}
             </div>
+            <div className="upload-hint">
+              PNG, JPG, WEBP (Máx. 5MB)
+            </div>
+            
+            {uploading && (
+              <div className="upload-loading">Subiendo imagen...</div>
+            )}
           </div>
-        )}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            accept="image/*"
+            style={{ display: 'none' }}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Nombre del Producto</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            placeholder="Ingresa el nombre del producto"
+          />
+        </div>
+        <div className="form-group">
+          <label>Precio ($)</label>
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleInputChange}
+            placeholder="Ingresa el precio"
+          />
+        </div>
+        <div className="form-group">
+          <label>Stock</label>
+          <input
+            type="number"
+            name="stock"
+            value={formData.stock}
+            onChange={handleInputChange}
+            placeholder="Ingresa la cantidad en stock"
+          />
+        </div>
+        <div className="form-group">
+          <label>Descripción</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            placeholder="Ingresa una descripción del producto"
+          />
+        </div>
+      </div>
+
+      <div className="form-actions">
+        <button 
+          className="btn btn-cancel"
+          onClick={() => setShowModal(false)}
+        >
+          Cancelar
+        </button>
+        <button 
+          className="btn btn-save"
+          onClick={handleSaveProduct}
+          disabled={uploading}
+        >
+          {editingProduct ? 'Actualizar' : 'Guardar'}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
       </div>
     </div>
   );

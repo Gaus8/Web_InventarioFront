@@ -321,6 +321,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 20px;
 }
 
 .modal {
@@ -329,12 +330,23 @@
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
+  max-height: 90vh; 
+  overflow-y: auto; 
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
 }
 
 .modal h2 {
   margin: 0 0 20px 0;
   color: #374151;
+  flex-shrink: 0;
+}
+
+.modal-content {
+  flex: 1;
+  overflow-y: auto; 
+  margin-bottom: 20px;
 }
 
 .form-group {
@@ -346,6 +358,7 @@
   margin-bottom: 6px;
   color: #374151;
   font-weight: 500;
+  font-size: 14px;
 }
 
 .form-group input,
@@ -359,8 +372,9 @@
 }
 
 .form-group textarea {
-  height: 80px;
+  height: 70px;
   resize: vertical;
+  min-height: 70px;
 }
 
 .form-actions {
@@ -368,6 +382,9 @@
   gap: 10px;
   justify-content: flex-end;
   margin-top: 20px;
+  flex-shrink: 0; 
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
 }
 
 .btn-cancel {
@@ -386,4 +403,81 @@
 
 .btn-save:hover {
   background: #1d4ed8;
+}
+
+/* === Estilos para upload de imágenes === */
+.image-upload {
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 16px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-upload:hover {
+  border-color: #2563eb;
+  background: #f8fafc;
+}
+
+.image-upload.dragover {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.upload-icon {
+  font-size: 36px;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.upload-text {
+  color: #6b7280;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.upload-hint {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.btn-upload {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.btn-upload:hover {
+  background: #1d4ed8;
+}
+
+.btn-upload:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.upload-loading {
+  color: #2563eb;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Asegurar que las imágenes en las tarjetas se vean bien */
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
 }
