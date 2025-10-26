@@ -468,10 +468,42 @@
   cursor: not-allowed;
 }
 
+/* Estados del upload */
+.upload-success {
+  color: #059669;
+  font-size: 14px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.upload-success::before {
+  content: "✓";
+  font-weight: bold;
+}
+
 .upload-loading {
   color: #2563eb;
   font-size: 14px;
   margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.upload-error {
+  color: #dc2626;
+  font-size: 14px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.upload-error::before {
+  content: "✗";
+  font-weight: bold;
 }
 
 /* Asegurar que las imágenes en las tarjetas se vean bien */
@@ -480,4 +512,39 @@
   height: 100%;
   object-fit: cover;
   border-radius: 6px;
+}
+.product-image:empty {
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image:empty::after {
+  content: "No image";
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* Estados de carga y mensajes */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-size: 18px;
+}
+
+.no-products {
+  text-align: center;
+  padding: 40px;
+  color: #9ca3af;
+  font-size: 16px;
+  grid-column: 1 / -1;
+}
+
+.product-category {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-style: italic;
 }
