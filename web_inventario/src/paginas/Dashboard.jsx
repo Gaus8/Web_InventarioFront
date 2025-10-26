@@ -12,15 +12,71 @@ import {
   FaCogs,
   FaShieldAlt
 } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom"; 
-import { useState } from "react";
+import { data, Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function Dashboard() {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  async function getToken() {
+    try {
+      const res = await axios.get("http://localhost:5000/api/verify-token", {
+        withCredentials: true,
+      });
+      
+      // ✅ Verificar si la respuesta indica que el token es válido
+      if (res.data.valid) {
+        return res.data;
+      } else {
+        console.warn("Token inválido:", res.data.message);
+        return null;
+      }
+      
+    } catch (error) {
+      // ✅ Manejar diferentes tipos de errores
+      if (error.response) {
+        // El servidor respondió con un código de error
+        console.error("Error del servidor:", error.response.data.message);
+      } else if (error.request) {
+        // La petición fue hecha pero no se recibió respuesta
+        console.error("Sin respuesta del servidor");
+      } else {
+        // Algo pasó en la configuración de la petición
+        console.error("Error:", error.message);
+      }
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const data = await getToken();
+      
+      if (data && data.valid) {
+        setUserData(data.user);
+        console.log("Usuario autenticado:", data.user);
+      } else {
+        console.warn("No autenticado - Redirigiendo a login...");
+        // Redirigir al login
+        window.location.href = "/login";
+      }
+      setLoading(false);
+    }
+    
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Cargando información del usuario...</div>;
+
+
   return (
     <div className="dashboard-container">
       <Sidebar />
       <div className="dashboard-main">
-        <Header />
+        <Header user={userData}/>
         <MainContent />
       </div>
     </div>
@@ -60,7 +116,7 @@ function Sidebar() {
 }
 
 /* ========== HEADER ========== */
-function Header() {
+function Header({user}) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [notifications] = useState(3);
@@ -73,14 +129,14 @@ function Header() {
   const handleLogoutConfirm = () => {
     // Aquí va tu lógica de logout
     console.log('Cerrando sesión...');
-    
+
     // Limpiar datos de sesión (si los tienes)
     // localStorage.removeItem('token');
     // localStorage.removeItem('user');
-    
+
     // Redirigir a la página principal
     window.location.href = '/'; // Esto recargará la página y llevará al MainPage
-    
+
     setShowLogoutModal(false);
   };
 
@@ -112,29 +168,29 @@ function Header() {
 
         {/* Perfil con Dropdown */}
         <div className="header-profile">
-          <FaUserCircle 
-            className="icon" 
+          <FaUserCircle
+            className="icon"
             onClick={() => setShowProfileDropdown(!showProfileDropdown)}
             style={{ cursor: 'pointer' }}
           />
-          
+
           {showProfileDropdown && (
             <div className="profile-dropdown">
               {/* Información del usuario */}
-              <div style={{ 
-                padding: '12px 16px', 
+              <div style={{
+                padding: '12px 16px',
                 borderBottom: '1px solid #e5e7eb',
                 background: '#f9fafb'
               }}>
                 <div style={{ fontWeight: '500', color: '#374151' }}>
-                  Admin User
+                  {user.name}
                 </div>
-                <div style={{ 
-                  fontSize: '12px', 
+                <div style={{
+                  fontSize: '12px',
                   color: '#6b7280',
                   marginTop: '2px'
                 }}>
-                  admin@cdisfruta.com
+                    {user.email}
                 </div>
               </div>
 
@@ -167,7 +223,7 @@ function Header() {
 
       {/* Overlay para cerrar el dropdown al hacer click fuera */}
       {showProfileDropdown && (
-        <div 
+        <div
           style={{
             position: 'fixed',
             top: 0,
@@ -191,13 +247,13 @@ function Header() {
               Serás redirigido a la página principal.
             </p>
             <div className="logout-actions">
-              <button 
+              <button
                 className="btn-logout-cancel"
                 onClick={handleLogoutCancel}
               >
                 Cancelar
               </button>
-              <button 
+              <button
                 className="btn-logout-confirm"
                 onClick={handleLogoutConfirm}
               >

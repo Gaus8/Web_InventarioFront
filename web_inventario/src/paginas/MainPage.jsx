@@ -12,7 +12,8 @@ import { BsTelephone } from "react-icons/bs";
 import { MdOutlineMail } from "react-icons/md";
 
 function MainPage() {
-  return (
+
+  return (  
     <>
       <div className="body">
         <header>
