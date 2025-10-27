@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function Dashboard() {
+
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -59,9 +60,7 @@ export default function Dashboard() {
         setUserData(data.user);
         console.log("Usuario autenticado:", data.user);
       } else {
-        console.warn("No autenticado - Redirigiendo a login...");
-        // Redirigir al login
-        window.location.href = "/login";
+        console.warn("No autenticado");
       }
       setLoading(false);
     }
@@ -69,20 +68,27 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  if (loading) return <div>Cargando información del usuario...</div>;
+  if (loading) {
+    return <div>Cargando información del usuario...</div>;
+  }
+  else if(!userData){
+    
+    return <div>Asegurese de Iniciar Sesión.</div>;
+  }
+  else{
 
 
   return (
     <div className="dashboard-container">
       <Sidebar />
       <div className="dashboard-main">
-        <Header user={userData}/>
+        <Header user={userData} setUserData={setUserData} />
         <MainContent />
       </div>
     </div>
   );
 }
-
+}
 /* ========== COMPONENTE SIDEBAR ========== */
 function Sidebar() {
   const location = useLocation();
@@ -116,7 +122,7 @@ function Sidebar() {
 }
 
 /* ========== HEADER ========== */
-function Header({user}) {
+function Header({user, setUserData}) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [notifications] = useState(3);
@@ -126,16 +132,22 @@ function Header({user}) {
     setShowLogoutModal(true);
   };
 
-  const handleLogoutConfirm = () => {
-    // Aquí va tu lógica de logout
-    console.log('Cerrando sesión...');
+  const handleLogoutConfirm = async () => {
+      try {
+       await axios.post("http://localhost:5000/api/logout", {}, {
+        withCredentials: true,
+      });
 
-    // Limpiar datos de sesión (si los tienes)
-    // localStorage.removeItem('token');
-    // localStorage.removeItem('user');
-
-    // Redirigir a la página principal
-    window.location.href = '/'; // Esto recargará la página y llevará al MainPage
+      // Limpiar estado local
+      setUserData(null);
+      
+      // Redirigir al login
+      window.location.href = '/login';
+      
+    } catch (error) {
+      console.error('Error en logout:', error);
+      window.location.href = '/login';
+    }
 
     setShowLogoutModal(false);
   };
