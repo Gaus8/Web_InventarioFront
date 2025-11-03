@@ -19,14 +19,15 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import MainContent from './RegistroProducto';
-
+const urlRender = 'https://web-inventario.onrender.com/';
+const urlServer = 'http://localhost:5000/api'
 export default function Productos() {
   return (
     <div className="dashboard-container">
       <Sidebar />
       <div className="dashboard-main">
         <Header />
-        <MainContent API_URL={'http://localhost:5000/api'}/>
+        <MainContent API_URL={urlRender}/>
       </div>
     </div>
   );

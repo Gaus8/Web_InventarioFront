@@ -16,7 +16,7 @@ function Validacion() {
   useEffect(() => {
     const verificarCuenta = async () => {
       try {
-        const res = await axios.get(urlServer);
+        const res = await axios.get(urlRender);
         if (res.status === 200) {
           // Mensaje opcional antes de redirigir
           setMensaje(res.data?.mensaje || 'Cuenta verificada correctamente.');

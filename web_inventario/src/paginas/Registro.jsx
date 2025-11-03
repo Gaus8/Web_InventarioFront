@@ -34,7 +34,7 @@ function Registro() {
 
     try {
       //Cambiar a urlRender para el deploy
-      const response = await axios.post(urlServer, data);
+      const response = await axios.post(urlRender, data);
 
       if (response.status === 201) {
         localStorage.setItem('userEmail', data.email);

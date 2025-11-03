@@ -20,10 +20,11 @@ export default function Dashboard() {
 
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const urlRender = 'https://web-inventario.onrender.com/verify-token';
+  const urlServer = 'http://localhost:5000/api/verify-token'
   async function getToken() {
     try {
-      const res = await axios.get("http://localhost:5000/api/verify-token", {
+      const res = await axios.get(urlRender, {
         withCredentials: true,
       });
       

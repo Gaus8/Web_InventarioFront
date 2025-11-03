@@ -30,7 +30,7 @@ function Login() {
     }
 
     try {
-      const res = await axios.post(`${urlServer}`, data, {withCredentials:true});
+      const res = await axios.post(`${urlRender}`, data, {withCredentials:true});
 
 
       if (res.status === 200 && res.data?.rol === 'admin') {
