@@ -1,10 +1,15 @@
 import '../assets/styles/styles_forms.css';
 import { useState } from 'react';
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 function Registro() {
 
   const urlRender = 'https://web-inventario.onrender.com/api/registro';
   const urlServer = 'http://localhost:5000/api/registro'
+
+
+const navigate = useNavigate();
+
 
   const [data, setData] = useState({
     name: "",
@@ -38,7 +43,7 @@ function Registro() {
 
       if (response.status === 201) {
         localStorage.setItem('userEmail', data.email);
-        window.location.href = "/validacion";
+        navigate("/validacion");
       }
     } catch (err) {
       const errorData = err.response?.data;
