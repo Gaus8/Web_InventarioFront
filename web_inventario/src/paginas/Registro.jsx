@@ -3,12 +3,10 @@ import { useState } from 'react';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 function Registro() {
-
+  
+  const navigate = useNavigate();
   const urlRender = 'https://web-inventario.onrender.com/api/registro';
   const urlServer = 'http://localhost:5000/api/registro'
-
-
-const navigate = useNavigate();
 
 
   const [data, setData] = useState({
@@ -16,6 +14,7 @@ const navigate = useNavigate();
     email: "",
     password: ""
   });
+
   const [respuestaServer, setRespuestaServer] = useState("");
   const [respuesta2Server, setRespuesta2Server] = useState("");
   const [respuesta3Server, setRespuesta3Server] = useState("");
@@ -43,7 +42,7 @@ const navigate = useNavigate();
 
       if (response.status === 201) {
         localStorage.setItem('userEmail', data.email);
-        navigate("/validacion");
+        navigate('/validacion');
       }
     } catch (err) {
       const errorData = err.response?.data;

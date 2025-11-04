@@ -136,7 +136,7 @@ function Header({user, setUserData}) {
 
   const handleLogoutConfirm = async () => {
       try {
-       await axios.post("https://web-inventario.onrender.com/api/logout", {}, {
+       await axios.post('https://web-inventario.onrender.com/api/logout', {}, {
         withCredentials: true,
       });
       const navigate = useNavigate()
