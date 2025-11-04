@@ -9,7 +9,7 @@ function Validacion() {
   const { token } = useParams(); // capturar token de la URL
   const navigate = useNavigate();
   
-  const urlRender = `https://web-inventario.onrender.com/validacion/${token}`;
+  const urlRender = `https://web-inventario.onrender.com/api/validacion/${token}`;
   const urlServer = `http://localhost:5000/api/validacion/${token}`
 
 

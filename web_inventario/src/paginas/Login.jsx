@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const navigate = useNavigate();
-  const urlRender = 'https://web-inventario.onrender.com/registro';
+  const urlRender = 'https://web-inventario.onrender.com/api/login';
   const urlServer = 'http://localhost:5000/api/login'
 
   const [respuestaServer, setRespuestaServer] = useState("");

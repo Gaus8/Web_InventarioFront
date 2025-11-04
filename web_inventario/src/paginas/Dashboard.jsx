@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const urlRender = 'https://web-inventario.onrender.com/verify-token';
+  const urlRender = 'https://web-inventario.onrender.com/api/verify-token';
   const urlServer = 'http://localhost:5000/api/verify-token'
   async function getToken() {
     try {

@@ -19,7 +19,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import MainContent from './RegistroProducto';
-const urlRender = 'https://web-inventario.onrender.com/';
+const urlRender = 'https://web-inventario.onrender.com/api';
 const urlServer = 'http://localhost:5000/api'
 export default function Productos() {
   return (
