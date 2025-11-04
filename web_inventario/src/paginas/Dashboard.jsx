@@ -125,6 +125,7 @@ function Sidebar() {
 
 /* ========== HEADER ========== */
 function Header({user, setUserData}) {
+  const navigate = useNavigate()
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [notifications] = useState(3);
@@ -139,7 +140,6 @@ function Header({user, setUserData}) {
        await axios.post('https://web-inventario.onrender.com/api/logout', {}, {
         withCredentials: true,
       });
-      const navigate = useNavigate()
       // Limpiar estado local
       setUserData(null);
       
