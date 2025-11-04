@@ -15,6 +15,7 @@ import {
 import { data, Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
 
@@ -135,19 +136,19 @@ function Header({user, setUserData}) {
 
   const handleLogoutConfirm = async () => {
       try {
-       await axios.post("http://localhost:5000/api/logout", {}, {
+       await axios.post("https://web-inventario.onrender.com/api/logout", {}, {
         withCredentials: true,
       });
-
+      const navigate = useNavigate()
       // Limpiar estado local
       setUserData(null);
       
       // Redirigir al login
-      window.location.href = '/login';
+      navigate('/login')
       
     } catch (error) {
       console.error('Error en logout:', error);
-      window.location.href = '/login';
+      navigate('/login')
     }
 
     setShowLogoutModal(false);

@@ -39,7 +39,7 @@ const navigate = useNavigate();
 
     try {
       //Cambiar a urlRender para el deploy
-      const response = await axios.post(urlRender, data);
+      const response = await axios.post(urlRender, data, { withCredentials: true });
 
       if (response.status === 201) {
         localStorage.setItem('userEmail', data.email);
